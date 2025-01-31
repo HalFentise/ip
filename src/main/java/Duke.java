@@ -1,8 +1,20 @@
+import java.util.Scanner;
+
 public class Duke {
+
     public static void main(String[] args) {
-        System.out.println("--------------------------------");
-        System.out.println("Hello, I am Martin!\nWhat can I do for you?");
-        System.out.println("--------------------------------");
-        System.out.println("Bye, see you next time!");
+        Scanner scanner = new Scanner(System.in);
+        String command;
+        //greeting
+        Instructions.greeting();
+
+        //main loop
+        while(true) {
+            command = scanner.nextLine();
+            int end = Instructions.echo(command);
+            if(end == 0) {
+                return;
+            }
+        }
     }
 }
