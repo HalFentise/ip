@@ -5,16 +5,18 @@ public class Duke {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String command;
+        TaskList tasklist = new TaskList();
         //greeting
-        Instructions.greeting();
+        Command.greeting();
 
         //main loop
         while(true) {
             command = scanner.nextLine();
-            int end = Instructions.echo(command);
-            if(end == 0) {
+            if (command.equals("bye")) {
+                Command.bye();
                 return;
             }
+            tasklist.add(command);
         }
     }
 }
