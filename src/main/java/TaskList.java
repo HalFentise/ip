@@ -1,13 +1,14 @@
 import java.util.Arrays;
 
 public class TaskList {
-    private String[] taskList = new String[0];
+    private Task[] taskList = new Task[0];
 
-    public void add(String task) {
-        if (task.equals("list")) {
+    public void add(String taskName) {
+        if (taskName.equals("list")) {
             list();
             return;
         }
+        Task task = new Task(taskName);
         taskList = Arrays.copyOf(taskList,taskList.length + 1);
         taskList[taskList.length-1] = task;
         System.out.println("added: " + task);
@@ -19,5 +20,14 @@ public class TaskList {
             System.out.printf("%d. " + taskList[i] + "\n",i + 1);
         }
         System.out.println("--------------------------------");
+    }
+
+    Task search(String taskName) {
+        for (Task tasks : taskList) {
+            if (tasks.isSame(taskName)) {
+                return tasks;
+            }
+        }
+        return null;
     }
 }
