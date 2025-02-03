@@ -1,7 +1,7 @@
 public class Command {
     static void greeting() {
         System.out.println("--------------------------------");
-        System.out.println("Hello, I am Martin!\nWhat can I do for you?");
+        System.out.println("Hello, I am HaHa!\nWhat can I do for you?");
         System.out.println("--------------------------------");
     }
 
