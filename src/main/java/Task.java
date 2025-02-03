@@ -1,6 +1,6 @@
 public class Task {
-    private String taskName;
-    private boolean isDone;
+    protected String taskName;
+    protected boolean isDone;
 
     Task(String taskName) {
         this.taskName = taskName;
@@ -25,5 +25,9 @@ public class Task {
             return true;
         }
         return false;
+    }
+
+    String getTaskName() {
+        return taskName;
     }
 }

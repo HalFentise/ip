@@ -8,7 +8,7 @@ public class Duke {
         TaskList tasklist = new TaskList();
 
         //greeting
-        Command.greeting();
+        Special.greeting();
 
         //main loop
         while(true) {
@@ -16,7 +16,7 @@ public class Duke {
 
             //bye
             if (command.equals("bye")) {
-                Command.bye();
+                Special.bye();
                 return;
             }
 
@@ -25,13 +25,13 @@ public class Duke {
                 tasklist.list();
                 continue;
             }
-            if (command.contains("mark")) {
+            if (command.startsWith("mark")) {
                 String[] parts = command.split("\\s+");
                 int index = Integer.parseInt(parts[parts.length - 1]);
                 tasklist.mark(index);
                 continue;
             }
-            if (command.contains("unmark")) {
+            if (command.startsWith("unmark")) {
                 String[] parts = command.split("\\s+");
                 int index = Integer.parseInt(parts[parts.length - 1]);
                 tasklist.unmark(index);
