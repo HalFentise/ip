@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class TaskList {
+public class TaskManager {
     private Task[] taskList = new Task[0];
 
     public void add(String taskString) {

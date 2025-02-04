@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
-public class Duke {
+public class HaHaHa {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String command;
-        TaskList tasklist = new TaskList();
+        TaskManager tasklist = new TaskManager();
 
         //greeting
         Special.greeting();
