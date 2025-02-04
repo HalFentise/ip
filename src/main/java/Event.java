@@ -1,10 +1,16 @@
 public class Event extends Task{
-    Event(String taskName) {
+    private String startTime;
+    private String endTime;
+
+    Event(String taskName,String startTime,String endTime) {
         super(taskName);
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String toString() {
         String state = isDone ? "[X]" : "[ ]";
-        return "[E]" + state + " " + taskName;
+        String time = "(from: " + this.startTime + " to: " + this.endTime + ")";
+        return "[E]" + state + " " + taskName + " " + time;
     }
 }

@@ -8,6 +8,6 @@ public class Deadline extends Task{
 
     public String toString() {
         String state = isDone ? "[X]" : "[ ]";
-        return "[D]" + state + " " + taskName + "(by:" + deadline + ")";
+        return "[D]" + state + " " + taskName + " (by:" + deadline + " )";
     }
 }
