@@ -1,3 +1,9 @@
+package Task;
+
+import Exceptions.InformationError;
+import Exceptions.TaskException;
+import Exceptions.UnSupportCommandException;
+
 import java.util.Arrays;
 
 public class TaskManager {
@@ -12,7 +18,7 @@ public class TaskManager {
         try {
             if (type.equals("todo")) {
                 if (parts.length < 2) {
-                    throw new InformationError("The description of Todo task cannot be empty, can you add it later?");
+                    throw new InformationError("The description of Task.Todo task cannot be empty, can you add it later?");
                 }
                 String name = parts[1];
                 task = new Todo(name);
@@ -67,7 +73,7 @@ public class TaskManager {
         return null;
     }
 
-    void mark(int index) {
+    public void mark(int index) {
         if (index > taskList.length || index < 0) {
             System.out.println("index is out of range :(");
             System.out.println("--------------------------------");
@@ -85,7 +91,7 @@ public class TaskManager {
         }
     }
 
-    void unmark(int index) {
+    public void unmark(int index) {
         if (index > taskList.length || index < 0) {
             System.out.println("index is out of range :(");
             System.out.println("--------------------------------");

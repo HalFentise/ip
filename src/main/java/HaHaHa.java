@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import Task.*;
+
 public class HaHaHa {
 
     public static void main(String[] args) {
