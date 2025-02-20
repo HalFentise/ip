@@ -4,10 +4,10 @@ import Exceptions.InformationError;
 import Exceptions.TaskException;
 import Exceptions.UnSupportCommandException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class TaskManager {
-    private Task[] taskList = new Task[0];
+    private ArrayList<Task> taskList = new ArrayList<>();
 
     public void add(String taskString) {
         Task task = null;
@@ -16,18 +16,30 @@ public class TaskManager {
         String type = parts[0];
 
         try {
-            if (type.equals("todo")) {
+            if (type.equals("delete")) {
+                if (parts.length < 2 || !parts[1].matches("\\d+")) {
+                    throw new InformationError("Please specify a valid task number to delete.");
+                }
+                int index = Integer.parseInt(parts[1]);
+                delete(index);
+            } else if (type.equals("todo")) {
                 if (parts.length < 2) {
-                    throw new InformationError("The description of Task.Todo task cannot be empty, can you add it later?");
+                    throw new InformationError("The description of Todo task cannot be empty, can you add it later?");
                 }
                 String name = parts[1];
                 task = new Todo(name);
             } else if (type.equals("deadline")) {
+                if (parts.length < 2) {
+                    throw new InformationError("The description of Deadline task cannot be empty, can you add it later?");
+                }
                 String deadline = parts[1];
                 String name = deadline.split(" /by ")[0];
                 String time = deadline.split(" /by ")[1];
                 task = new Deadline(name, time);
             } else if (type.equals("event")) {
+                if (parts.length < 2) {
+                    throw new InformationError("The description of Event task cannot be empty, can you add it later?");
+                }
                 String event = parts[1];
                 String name = event.split(" /from ")[0];
                 String time = event.split(" /from ",2)[1];
@@ -44,26 +56,25 @@ public class TaskManager {
         }
 
         //add to list
-        taskList = Arrays.copyOf(taskList,taskList.length + 1);
-        taskList[taskList.length-1] = task;
+        taskList.add(task);
         System.out.println("added: " + task.getTaskName());
-        System.out.println("Now you have " + taskList.length + " in the list.");
+        System.out.println("Now you have " + taskList.size() + " in the list.");
         System.out.println("--------------------------------");
     }
 
     public void list() {
-        if (taskList.length == 0) {
+        if (taskList.isEmpty()) {
             System.out.println("No task in the list, go and add something!");
             System.out.println("--------------------------------");
             return;
         }
         System.out.println("[X] means done, you can check your work here.");
-        for (int i = 0; i < taskList.length; i++) {
-            System.out.printf("%d. " + taskList[i] + "\n",i + 1);
+        for (int i = 0; i < taskList.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, taskList.get(i));
         }
         System.out.println("--------------------------------");
     }
-
+    //search the task
     Task search(String taskName) {
         for (Task tasks : taskList) {
             if (tasks.isSame(taskName)) {
@@ -72,18 +83,17 @@ public class TaskManager {
         }
         return null;
     }
-
+    //mark an unmark task
     public void mark(int index) {
-        if (index > taskList.length || index < 0) {
-            System.out.println("index is out of range :(");
+        if (index > taskList.size() || index <= 0) {
+            System.out.println("Index is out of range :(");
             System.out.println("--------------------------------");
             return;
         }
-        Task task = taskList[index - 1];
+        Task task = taskList.get(index - 1);
         if (task == null) {
-            System.out.println("task not found");
-        }
-        else {
+            System.out.println("Task not found.");
+        } else {
             task.mark();
             System.out.println("Great! This task has been marked done!");
             System.out.println(index + ". " + task);
@@ -92,12 +102,12 @@ public class TaskManager {
     }
 
     public void unmark(int index) {
-        if (index > taskList.length || index < 0) {
+        if (index > taskList.size() || index < 0) {
             System.out.println("index is out of range :(");
             System.out.println("--------------------------------");
             return;
         }
-        Task task = taskList[index - 1];
+        Task task = taskList.get(index - 1);
         if (task == null) {
             System.out.println("task not found");
         }
@@ -107,5 +117,18 @@ public class TaskManager {
             System.out.println(index + ". " + task);
             System.out.println("--------------------------------");
         }
+    }
+    // delete task
+    public void delete(int index) {
+        if (index <= 0 || index > taskList.size()) {
+            System.out.println("Index is out of range :(");
+            System.out.println("--------------------------------");
+            return;
+        }
+        Task removedTask = taskList.remove(index - 1);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  " + removedTask);
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        System.out.println("--------------------------------");
     }
 }
