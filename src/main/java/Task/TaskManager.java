@@ -5,9 +5,11 @@ import Exceptions.TaskException;
 import Exceptions.UnSupportCommandException;
 
 import java.util.ArrayList;
+import java.io.*;
 
 public class TaskManager {
     private ArrayList<Task> taskList = new ArrayList<>();
+    private static final String FILE_PATH = "./data/list.txt";
 
     public void add(String taskString) {
         Task task = null;
@@ -42,17 +44,17 @@ public class TaskManager {
                 }
                 String event = parts[1];
                 String name = event.split(" /from ")[0];
-                String time = event.split(" /from ",2)[1];
+                String time = event.split(" /from ", 2)[1];
                 String startTime = time.split(" /to ")[0];
-                String endTime = time.split(" /to ",2)[1];
+                String endTime = time.split(" /to ", 2)[1];
                 task = new Event(name, startTime, endTime);
             } else {
                 throw new UnSupportCommandException("Sorry, I don't know what is this mean (T⌓T)");
             }
         } catch (TaskException e) {
-                System.out.println(e.getMessage());
-                System.out.println("--------------------------------");
-                return;
+            System.out.println(e.getMessage());
+            System.out.println("--------------------------------");
+            return;
         }
 
         //add to list
@@ -130,5 +132,27 @@ public class TaskManager {
         System.out.println("  " + removedTask);
         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
         System.out.println("--------------------------------");
+    }
+    //save
+
+    private void saveTasks() {
+        File file = new File(FILE_PATH);
+        File parentDir = file.getParentFile();
+
+        try {
+            // 如果目录不存在，创建目录
+            if (!parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+            // 写入任务到文件
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for (Task task : taskList) {
+                writer.write(task.toFileFormat());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks: " + e.getMessage());
+        }
     }
 }
