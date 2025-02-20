@@ -11,6 +11,10 @@ public class TaskManager {
     private ArrayList<Task> taskList = new ArrayList<>();
     private static final String FILE_PATH = "./data/list.txt";
 
+    public TaskManager() {
+        loadTasks();
+    }
+
     public void add(String taskString) {
         Task task = null;
 
@@ -24,6 +28,7 @@ public class TaskManager {
                 }
                 int index = Integer.parseInt(parts[1]);
                 delete(index);
+                return;
             } else if (type.equals("todo")) {
                 if (parts.length < 2) {
                     throw new InformationError("The description of Todo task cannot be empty, can you add it later?");
@@ -35,19 +40,13 @@ public class TaskManager {
                     throw new InformationError("The description of Deadline task cannot be empty, can you add it later?");
                 }
                 String deadline = parts[1];
-                String name = deadline.split(" /by ")[0];
-                String time = deadline.split(" /by ")[1];
-                task = new Deadline(name, time);
+                task = new Deadline(deadline);
             } else if (type.equals("event")) {
                 if (parts.length < 2) {
                     throw new InformationError("The description of Event task cannot be empty, can you add it later?");
                 }
                 String event = parts[1];
-                String name = event.split(" /from ")[0];
-                String time = event.split(" /from ", 2)[1];
-                String startTime = time.split(" /to ")[0];
-                String endTime = time.split(" /to ", 2)[1];
-                task = new Event(name, startTime, endTime);
+                task = new Event(event);
             } else {
                 throw new UnSupportCommandException("Sorry, I don't know what is this mean (T⌓T)");
             }
@@ -59,6 +58,7 @@ public class TaskManager {
 
         //add to list
         taskList.add(task);
+        saveTasks();
         System.out.println("added: " + task.getTaskName());
         System.out.println("Now you have " + taskList.size() + " in the list.");
         System.out.println("--------------------------------");
@@ -76,15 +76,7 @@ public class TaskManager {
         }
         System.out.println("--------------------------------");
     }
-    //search the task
-    Task search(String taskName) {
-        for (Task tasks : taskList) {
-            if (tasks.isSame(taskName)) {
-                return tasks;
-            }
-        }
-        return null;
-    }
+
     //mark an unmark task
     public void mark(int index) {
         if (index > taskList.size() || index <= 0) {
@@ -101,6 +93,7 @@ public class TaskManager {
             System.out.println(index + ". " + task);
             System.out.println("--------------------------------");
         }
+        saveTasks();
     }
 
     public void unmark(int index) {
@@ -119,6 +112,7 @@ public class TaskManager {
             System.out.println(index + ". " + task);
             System.out.println("--------------------------------");
         }
+        saveTasks();
     }
     // delete task
     public void delete(int index) {
@@ -132,6 +126,7 @@ public class TaskManager {
         System.out.println("  " + removedTask);
         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
         System.out.println("--------------------------------");
+        saveTasks();
     }
     //save
 
@@ -140,19 +135,37 @@ public class TaskManager {
         File parentDir = file.getParentFile();
 
         try {
-            // 如果目录不存在，创建目录
             if (!parentDir.exists()) {
                 parentDir.mkdirs();
             }
-            // 写入任务到文件
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             for (Task task : taskList) {
+                if (task == null) {
+                    return;
+                }
                 writer.write(task.toFileFormat());
                 writer.newLine();
             }
             writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
+        }
+    }
+
+    private void loadTasks() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Task task = Task.fromFileFormat(line);
+                taskList.add(task);
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading tasks: " + e.getMessage());
         }
     }
 }

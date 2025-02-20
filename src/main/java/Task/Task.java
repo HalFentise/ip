@@ -32,4 +32,16 @@ public class Task {
     String getTaskName() {
         return taskName;
     }
+
+    protected void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String toFileFormat() {
+        return "Task" + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName();
+    }
+
+    static public Task fromFileFormat(String fileFormat) {
+        return new Task(fileFormat);
+    }
 }

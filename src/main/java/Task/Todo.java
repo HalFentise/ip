@@ -9,4 +9,9 @@ public class Todo extends Task {
         String state = isDone ? "[X]" : "[ ]";
         return "[T]" + state + " " + taskName;
     }
+
+    @Override
+    public String toFileFormat() {
+        return "T | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName();
+    }
 }
