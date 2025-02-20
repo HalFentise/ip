@@ -16,7 +16,7 @@ public class TaskManager {
     }
 
     public void add(String taskString) {
-        Task task = null;
+        Task task;
 
         String[] parts = taskString.split("\\s+",2);
         String type = parts[0];
