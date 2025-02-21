@@ -7,7 +7,7 @@ public class Deadline extends Task {
 
     public Deadline(String taskString) {
         super(taskString);
-        String[] parts = taskString.split(" /by ");
+        String[] parts = taskString.split(" by ");
         if (parts.length == 2) {
             setTaskName(parts[0]);
             this.deadline = parts[1];

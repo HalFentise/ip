@@ -6,10 +6,10 @@ public class Event extends Task {
 
     Event(String taskName) {
         super(taskName);
-        String[] parts = taskName.split(" /from ");
+        String[] parts = taskName.split(" from ");
         if (parts.length == 2) {
             setTaskName(parts[0]);
-            String[] timeParts = parts[1].split(" /to ");
+            String[] timeParts = parts[1].split(" to ");
             if (timeParts.length == 2) {
                 this.startTime = timeParts[0];
                 this.endTime = timeParts[1];
