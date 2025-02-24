@@ -4,7 +4,7 @@ public class Task {
     protected String taskName;
     protected boolean isDone;
 
-    Task(String taskName) {
+    public Task(String taskName) {
         this.taskName = taskName;
         isDone = false;
     }

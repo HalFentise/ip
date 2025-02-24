@@ -4,7 +4,7 @@ public class Event extends Task {
     private String startTime;
     private String endTime;
 
-    Event(String taskName) {
+    public Event(String taskName) {
         super(taskName);
         String[] parts = taskName.split(" from ");
         if (parts.length == 2) {
