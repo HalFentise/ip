@@ -48,7 +48,8 @@ public class TaskManager {
                 String event = parts[1];
                 task = new Event(event);
             } else {
-                throw new UnSupportCommandException("Sorry, I don't know what is this mean (T⌓T)");
+                throw new UnSupportCommandException("Sorry, I don't know what is this mean (TwT)\n" +
+                        "I cannot read uppercase letters, if you use uppercase in your command, maybe you can use lowercase letters?");
             }
         } catch (TaskException e) {
             System.out.println(e.getMessage());
@@ -80,7 +81,7 @@ public class TaskManager {
     //mark an unmark task
     public void mark(int index) {
         if (index > taskList.size() || index <= 0) {
-            System.out.println("Index is out of range :(");
+            System.out.println("this task is not exist :(");
             System.out.println("--------------------------------");
             return;
         }
@@ -98,7 +99,7 @@ public class TaskManager {
 
     public void unmark(int index) {
         if (index > taskList.size() || index < 0) {
-            System.out.println("index is out of range :(");
+            System.out.println("this task is not exist :(");
             System.out.println("--------------------------------");
             return;
         }
@@ -117,7 +118,7 @@ public class TaskManager {
     // delete task
     public void delete(int index) {
         if (index <= 0 || index > taskList.size()) {
-            System.out.println("Index is out of range :(");
+            System.out.println("this task is not exist :(");
             System.out.println("--------------------------------");
             return;
         }

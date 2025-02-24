@@ -23,6 +23,13 @@ public class Deadline extends Task {
 
     @Override
     public String toFileFormat() {
-        return "D | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName();
+        return "D | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName() + " (by: " + deadline + ")";
+    }
+
+    static public Task fromFileFormat(String fileFormat) {
+        String[] parts = fileFormat.split(" \\(by: ");
+        String time = parts[1].substring(0, parts[1].length() - 2);
+        String deadline = parts[0] + " by " + time;
+        return new Deadline(deadline);
     }
 }

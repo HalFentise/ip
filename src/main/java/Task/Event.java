@@ -29,6 +29,16 @@ public class Event extends Task {
 
     @Override
     public String toFileFormat() {
-        return "E | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName();
+        return "E | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName() + " (from: " + this.startTime + " to: " + this.endTime + ")";
+    }
+
+    static public Task fromFileFormat(String fileFormat) {
+        String[] parts = fileFormat.split(" \\(from: ");
+        String name = parts[0];
+        String[] timeParts = parts[1].split(" to: ");
+        String startTime = timeParts[0];
+        String endTime = timeParts[1].substring(0, timeParts[1].length() - 2);
+        String taskName = name + " from " + startTime + " to " + endTime;
+        return new Event(taskName);
     }
 }

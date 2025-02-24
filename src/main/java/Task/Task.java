@@ -42,6 +42,24 @@ public class Task {
     }
 
     static public Task fromFileFormat(String fileFormat) {
-        return new Task(fileFormat);
+        String [] parts = fileFormat.split(" \\| ",3);
+        boolean done = parts[1].equals("  Done  ");
+        Task task;
+        System.out.println(parts[1]);
+        switch (parts[0]) {
+            case "T": task = Todo.fromFileFormat(parts[2]);
+            break;
+            case "D": task = Deadline.fromFileFormat(parts[2]);
+            break;
+            case "E": task = Event.fromFileFormat(parts[2]);
+            break;
+            default: task = new Task(parts[0]);
+        }
+        if (done) {
+            task.mark();
+        } else {
+            task.unmark();
+        }
+        return task;
     }
 }

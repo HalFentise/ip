@@ -14,4 +14,8 @@ public class Todo extends Task {
     public String toFileFormat() {
         return "T | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName();
     }
+
+    static public Task fromFileFormat(String fileFormat) {
+        return new Todo (fileFormat);
+    }
 }

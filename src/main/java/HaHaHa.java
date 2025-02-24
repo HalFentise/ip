@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import Task.*;
+import Exceptions.*;
 
 public class HaHaHa {
 
@@ -28,16 +29,32 @@ public class HaHaHa {
                 continue;
             }
             if (command.startsWith("mark")) {
-                String[] parts = command.split("\\s+");
-                int index = Integer.parseInt(parts[parts.length - 1]);
-                tasklist.mark(index);
+                try {
+                    String[] parts = command.split("\\s+");
+                    if (parts.length == 1) {
+                        throw new InformationError("if you want to mark a task, please let me know the task No.\neg. mark 1");
+                    }
+                    int index = Integer.parseInt(parts[parts.length - 1]);
+                    tasklist.mark(index);
+                } catch (InformationError e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("--------------------------------");
+                }
                 continue;
             }
             if (command.startsWith("unmark")) {
-                String[] parts = command.split("\\s+");
-                int index = Integer.parseInt(parts[parts.length - 1]);
-                tasklist.unmark(index);
-                continue;
+                try {
+                    String[] parts = command.split("\\s+");
+                    if (parts.length == 1) {
+                        throw new InformationError("if you want to mark a task, please let me know the task No.\neg. mark 1");
+                    }
+                    int index = Integer.parseInt(parts[parts.length - 1]);
+                    tasklist.unmark(index);
+                } catch (InformationError e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("--------------------------------");
+                }
+            continue;
             }
             tasklist.add(command);
         }
