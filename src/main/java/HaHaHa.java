@@ -1,7 +1,4 @@
-import java.util.Scanner;
-
 import Task.*;
-import Exceptions.*;
 import java.io.*;
 
 public class HaHaHa {
