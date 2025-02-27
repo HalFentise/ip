@@ -7,6 +7,7 @@ public class Parser {
         String[] parts = input.split("\\s+", 2);
         String command = parts[0].toLowerCase();
 
+        //command handle
         try {
             switch (command) {
                 case "list":

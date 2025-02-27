@@ -11,6 +11,9 @@ public class Ui {
 
     public void welcome() {
         System.out.println("--------------------------------");
+        System.out.println("please notice that\n" +
+                "the input date format should be: d/m/yyyy\n" +
+                "Sorry for bring any inconvenience to you.");
         System.out.println("Hello, I am HaHaHa!\nWhat can I do for you?");
         System.out.println("--------------------------------");
     }
