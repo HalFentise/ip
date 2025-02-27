@@ -4,21 +4,10 @@ public class Event extends Task {
     private String startTime;
     private String endTime;
 
-    public Event(String taskName) {
+    public Event(String taskName, String startTime, String endTime) {
         super(taskName);
-        String[] parts = taskName.split(" from ");
-        if (parts.length == 2) {
-            setTaskName(parts[0]);
-            String[] timeParts = parts[1].split(" to ");
-            if (timeParts.length == 2) {
-                this.startTime = timeParts[0];
-                this.endTime = timeParts[1];
-            } else {
-                throw new IllegalArgumentException("Invalid event time format.");
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid event task format.");
-        }
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String toString() {
@@ -38,7 +27,6 @@ public class Event extends Task {
         String[] timeParts = parts[1].split(" to: ");
         String startTime = timeParts[0];
         String endTime = timeParts[1].substring(0, timeParts[1].length() - 2);
-        String taskName = name + " from " + startTime + " to " + endTime;
-        return new Event(taskName);
+        return new Event(name, startTime, endTime);
     }
 }

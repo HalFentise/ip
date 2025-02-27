@@ -33,7 +33,7 @@ public class Ui {
         if (tasks.isEmpty()) {
             System.out.println("No tasks in the list. Go and add something!");
         } else {
-            System.out.println("Here are your tasks:");
+            System.out.println("Here are your tasks:\n");
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.printf("%d. %s\n", i + 1, tasks.get(i));
             }
