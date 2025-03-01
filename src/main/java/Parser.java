@@ -7,6 +7,7 @@ public class Parser {
         String[] parts = input.split("\\s+", 2);
         String command = parts[0].toLowerCase();
 
+        //command handle
         try {
             switch (command) {
                 case "list":
@@ -23,21 +24,44 @@ public class Parser {
                     break;
                 case "event":
                     if (parts.length < 2) {
-                        throw new TaskException("The description of a todo cannot be empty.");
+                        throw new TaskException("The description of a event cannot be empty.");
                     }
-                    Task event = new Event(parts[1]);
-                    taskList.addTask(event);
-                    storage.saveTasks(taskList.getTasks());
-                    ui.showTaskAdded(event, taskList.getTasks().size());
+                    String[] eventString = parts[1].split(" /from ");
+                    if (eventString.length == 2) {
+                        String name = eventString[0];
+                        String[] time = eventString[1].split(" /to ");
+                        if (time.length == 2) {
+                            String startTime = time[0];
+                            String endTime = time[1];
+                            Task event = new Event(name,startTime,endTime);
+                            taskList.addTask(event);
+                            storage.saveTasks(taskList.getTasks());
+                            ui.showTaskAdded(event, taskList.getTasks().size());
+                        } else {
+                            throw new TaskException("Invalid event format.\n" +
+                                    "Valid format: event description /from startTime /to endTime");
+                        }
+                    } else {
+                        throw new TaskException("Invalid event format.\n" +
+                                "Valid format: event description /from startTime /to endTime");
+                    }
                     break;
                 case "deadline":
                     if (parts.length < 2) {
-                        throw new TaskException("The description of a todo cannot be empty.");
+                        throw new TaskException("The description of a deadline cannot be empty.");
                     }
-                    Task deadline = new Deadline(parts[1]);
-                    taskList.addTask(deadline);
-                    storage.saveTasks(taskList.getTasks());
-                    ui.showTaskAdded(deadline, taskList.getTasks().size());
+                    String[] deadlineString = parts[1].split(" /by ");
+                    if (deadlineString.length == 2) {
+                        String taskName = deadlineString[0];
+                        String time = deadlineString[1];
+                        Task deadline = new Deadline(taskName, time);
+                        taskList.addTask(deadline);
+                        storage.saveTasks(taskList.getTasks());
+                        ui.showTaskAdded(deadline, taskList.getTasks().size());
+                    } else {
+                        throw new TaskException("Invalid deadline format.\n" +
+                                "Valid format: deadline description /by time");
+                    }
                     break;
                 case "delete":
                     if (parts.length < 2 || !parts[1].matches("\\d+")) {
