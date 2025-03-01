@@ -95,12 +95,14 @@ public class Parser {
                     System.out.println("Goodbye! Hope to see you again!");
                     ui.showLine();
                     System.exit(0);
+                    break;
                 case "find":
                     if (parts.length < 2) {
                         throw new TaskException("The description of a deadline cannot be empty.");
                     } else {
                         ui.showTasks(taskList.findTask(parts[1]));
                     }
+                    break;
                 default:
                     throw new TaskException("Unknown command.");
             }
