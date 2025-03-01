@@ -3,31 +3,32 @@ import Exceptions.*;
 import java.io.*;
 
 /**
- * A utility class for parsing and executing user commands.
- * Interacts with the task list, user interface, and storage to handle various commands.
+ * This class is responsible for parsing user input and executing the corresponding command.
+ * It interacts with the task list, UI, and storage to manage tasks.
  */
 public class Parser {
 
     /**
-     * Parses and executes a user command.
+     * Parses the given input command and performs the corresponding action.
+     * It handles commands for listing, adding, deleting, marking, unmarking tasks,
+     * and quitting the program.
      *
-     * @param input     the user's input command as a string
-     * @param taskList  the task list to perform operations on
-     * @param ui        the user interface for displaying output
-     * @param storage   the storage system for saving and loading tasks
+     * @param input the user input command as a string
+     * @param taskList the list of tasks to perform actions on
+     * @param ui the user interface to show feedback
+     * @param storage the storage to save the tasks after modification
      */
     public static void parse(String input, TaskList taskList, Ui ui, Storage storage) {
-        String[] parts = input.split("\\s+", 2); // Split the input into command and arguments
-        String command = parts[0].toLowerCase(); // Extract the command and convert to lowercase
+        String[] parts = input.split("\\s+", 2);
+        String command = parts[0].toLowerCase();
 
+        // Command handling
         try {
             switch (command) {
                 case "list":
-                    // Display all tasks in the task list
                     ui.showTasks(taskList.getTasks());
                     break;
                 case "todo":
-                    // Add a new todo task
                     if (parts.length < 2) {
                         throw new TaskException("The description of a todo cannot be empty.");
                     }
@@ -37,27 +38,47 @@ public class Parser {
                     ui.showTaskAdded(todo, taskList.getTasks().size());
                     break;
                 case "event":
-                    // Add a new event task
                     if (parts.length < 2) {
                         throw new TaskException("The description of an event cannot be empty.");
                     }
-                    Task event = new Event(parts[1]);
-                    taskList.addTask(event);
-                    storage.saveTasks(taskList.getTasks());
-                    ui.showTaskAdded(event, taskList.getTasks().size());
+                    String[] eventString = parts[1].split(" /from ");
+                    if (eventString.length == 2) {
+                        String name = eventString[0];
+                        String[] time = eventString[1].split(" /to ");
+                        if (time.length == 2) {
+                            String startTime = time[0];
+                            String endTime = time[1];
+                            Task event = new Event(name, startTime, endTime);
+                            taskList.addTask(event);
+                            storage.saveTasks(taskList.getTasks());
+                            ui.showTaskAdded(event, taskList.getTasks().size());
+                        } else {
+                            throw new TaskException("Invalid event format.\n" +
+                                    "Valid format: event description /from startTime /to endTime");
+                        }
+                    } else {
+                        throw new TaskException("Invalid event format.\n" +
+                                "Valid format: event description /from startTime /to endTime");
+                    }
                     break;
                 case "deadline":
-                    // Add a new deadline task
                     if (parts.length < 2) {
                         throw new TaskException("The description of a deadline cannot be empty.");
                     }
-                    Task deadline = new Deadline(parts[1]);
-                    taskList.addTask(deadline);
-                    storage.saveTasks(taskList.getTasks());
-                    ui.showTaskAdded(deadline, taskList.getTasks().size());
+                    String[] deadlineString = parts[1].split(" /by ");
+                    if (deadlineString.length == 2) {
+                        String taskName = deadlineString[0];
+                        String time = deadlineString[1];
+                        Task deadline = new Deadline(taskName, time);
+                        taskList.addTask(deadline);
+                        storage.saveTasks(taskList.getTasks());
+                        ui.showTaskAdded(deadline, taskList.getTasks().size());
+                    } else {
+                        throw new TaskException("Invalid deadline format.\n" +
+                                "Valid format: deadline description /by time");
+                    }
                     break;
                 case "delete":
-                    // Delete a task by its index
                     if (parts.length < 2 || !parts[1].matches("\\d+")) {
                         throw new TaskException("Please specify a valid task number to delete.");
                     }
@@ -68,7 +89,6 @@ public class Parser {
                     ui.showTaskDeleted(removedTask, taskList.getTasks().size());
                     break;
                 case "mark":
-                    // Mark a task as completed
                     if (parts.length < 2 || !parts[1].matches("\\d+")) {
                         throw new TaskException("Please specify a valid task number to mark.");
                     }
@@ -78,7 +98,6 @@ public class Parser {
                     ui.showTasks(taskList.getTasks());
                     break;
                 case "unmark":
-                    // Unmark a task (mark it as not completed)
                     if (parts.length < 2 || !parts[1].matches("\\d+")) {
                         throw new TaskException("Please specify a valid task number to unmark.");
                     }
@@ -88,16 +107,13 @@ public class Parser {
                     ui.showTasks(taskList.getTasks());
                     break;
                 case "bye":
-                    // Exit the application
                     System.out.println("Goodbye! Hope to see you again!");
                     ui.showLine();
                     System.exit(0);
                 default:
-                    // Handle unknown commands
                     throw new TaskException("Unknown command.");
             }
         } catch (TaskException | IOException e) {
-            // Display error messages for exceptions
             ui.showError(e.getMessage());
         }
     }
