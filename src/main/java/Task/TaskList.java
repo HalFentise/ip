@@ -4,41 +4,38 @@ import java.util.ArrayList;
 import Exceptions.*;
 
 /**
- * A utility class for managing and interacting with a list of tasks.
- * Provides methods to add, delete, retrieve, and mark tasks as completed or uncompleted.
+ * Represents a list of tasks.
+ * This class allows adding, removing, retrieving, and modifying tasks in a collection.
  */
 public class TaskList {
-    private ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;  // List that stores the tasks
 
     /**
-     * Creates an empty task list.
+     * Default constructor initializes an empty task list.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
     /**
-     * Creates a task list initialized with the given list of tasks.
-     *
-     * @param tasks the list of tasks to initialize the task list with
+     * Constructor that initializes the task list with an existing list of tasks.
+     * @param tasks the list of tasks to initialize the TaskList with
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
     /**
-     * Adds a task to the task list.
-     *
-     * @param task the task to be added
+     * Adds a new task to the task list.
+     * @param task the task to add
      */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
     /**
-     * Deletes a task from the task list at the specified index.
-     *
-     * @param index the index of the task to be deleted
+     * Deletes a task at a specified index.
+     * @param index the index of the task to delete
      * @throws TaskException if the index is out of range
      */
     public void deleteTask(int index) throws TaskException {
@@ -49,8 +46,7 @@ public class TaskList {
     }
 
     /**
-     * Retrieves the task at the specified index from the task list.
-     *
+     * Retrieves a task at a specified index.
      * @param index the index of the task to retrieve
      * @return the task at the specified index
      * @throws TaskException if the index is out of range
@@ -63,8 +59,7 @@ public class TaskList {
     }
 
     /**
-     * Retrieves the list of all tasks.
-     *
+     * Returns the list of all tasks.
      * @return the list of tasks
      */
     public ArrayList<Task> getTasks() {
@@ -72,9 +67,23 @@ public class TaskList {
     }
 
     /**
-     * Marks the task at the specified index as completed.
-     *
-     * @param index the index of the task to mark as completed
+     * Finds tasks whose names contain the specified keyword.
+     * @param keyword the keyword to search for in task names
+     * @return a list of tasks that match the search criterion
+     */
+    public ArrayList<Task> findTask(String keyword) {
+        ArrayList<Task> task = new ArrayList<>();
+        for (Task keyTask : tasks) {
+            if (keyTask.getTaskName().contains(keyword)) {
+                task.add(keyTask);
+            }
+        }
+        return task;
+    }
+
+    /**
+     * Marks the task at the specified index as done.
+     * @param index the index of the task to mark as done
      * @throws TaskException if the index is out of range
      */
     public void markTask(int index) throws TaskException {
@@ -82,9 +91,8 @@ public class TaskList {
     }
 
     /**
-     * Marks the task at the specified index as not completed.
-     *
-     * @param index the index of the task to mark as not completed
+     * Unmarks the task at the specified index.
+     * @param index the index of the task to unmark
      * @throws TaskException if the index is out of range
      */
     public void unmarkTask(int index) throws TaskException {
