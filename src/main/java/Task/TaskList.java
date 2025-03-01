@@ -36,6 +36,16 @@ public class TaskList {
         return tasks;
     }
 
+    public ArrayList<Task> findTask(String keyword) {
+        ArrayList<Task> task = new ArrayList<>();
+        for (Task keyTask : tasks) {
+            if (keyTask.getTaskName().contains(keyword)) {
+                task.add(keyTask);
+            }
+        }
+        return task;
+    }
+
     public void markTask(int index) throws TaskException {
         getTask(index).mark();
     }
