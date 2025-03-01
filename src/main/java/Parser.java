@@ -71,6 +71,11 @@ public class Parser {
                     System.out.println("Goodbye! Hope to see you again!");
                     ui.showLine();
                     System.exit(0);
+                case "find":
+                    if (parts.length < 2) {
+                        throw new TaskException("Can you tell me what thing you want to find?");
+                    }
+                    ui.showTasks(taskList.findTask(parts[1]));
                 default:
                     throw new TaskException("Unknown command.");
             }

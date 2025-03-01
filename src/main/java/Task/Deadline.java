@@ -28,7 +28,7 @@ public class Deadline extends Task {
 
     static public Task fromFileFormat(String fileFormat) {
         String[] parts = fileFormat.split(" \\(by: ");
-        String time = parts[1].substring(0, parts[1].length() - 2);
+        String time = parts[1].substring(0, parts[1].length() - 1);
         String deadline = parts[0] + " by " + time;
         return new Deadline(deadline);
     }
