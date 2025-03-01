@@ -6,7 +6,7 @@ import java.io.*;
  * This application manages a list of tasks with functionalities such as adding, deleting, and marking tasks.
  * It handles user input and interacts with the TaskList, Storage, and Ui components.
  */
-public class HaHaHa {
+public class SmartNotes {
     private Storage storage;
     private TaskList taskList;
     private Ui ui;
@@ -17,7 +17,7 @@ public class HaHaHa {
      *
      * @param filePath the file path to load and store task data
      */
-    public HaHaHa(String filePath) {
+    public SmartNotes(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
 
@@ -49,7 +49,7 @@ public class HaHaHa {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        new HaHaHa("./data/list.txt").run();
+        new SmartNotes("./data/list.txt").run();
     }
 }
 
