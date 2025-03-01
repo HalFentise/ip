@@ -2,12 +2,27 @@ import Task.*;
 import Exceptions.*;
 import java.io.*;
 
+/**
+ * This class is responsible for parsing user input and executing the corresponding command.
+ * It interacts with the task list, UI, and storage to manage tasks.
+ */
 public class Parser {
+
+    /**
+     * Parses the given input command and performs the corresponding action.
+     * It handles commands for listing, adding, deleting, marking, unmarking tasks, find
+     * and quitting the program.
+     *
+     * @param input the user input command as a string
+     * @param taskList the list of tasks to perform actions on
+     * @param ui the user interface to show feedback
+     * @param storage the storage to save the tasks after modification
+     */
     public static void parse(String input, TaskList taskList, Ui ui, Storage storage) {
         String[] parts = input.split("\\s+", 2);
         String command = parts[0].toLowerCase();
 
-        //command handle
+        // Command handling
         try {
             switch (command) {
                 case "list":
@@ -24,7 +39,7 @@ public class Parser {
                     break;
                 case "event":
                     if (parts.length < 2) {
-                        throw new TaskException("The description of a event cannot be empty.");
+                        throw new TaskException("The description of an event cannot be empty.");
                     }
                     String[] eventString = parts[1].split(" /from ");
                     if (eventString.length == 2) {
@@ -33,7 +48,7 @@ public class Parser {
                         if (time.length == 2) {
                             String startTime = time[0];
                             String endTime = time[1];
-                            Task event = new Event(name,startTime,endTime);
+                            Task event = new Event(name, startTime, endTime);
                             taskList.addTask(event);
                             storage.saveTasks(taskList.getTasks());
                             ui.showTaskAdded(event, taskList.getTasks().size());
@@ -111,3 +126,4 @@ public class Parser {
         }
     }
 }
+

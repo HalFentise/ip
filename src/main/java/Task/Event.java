@@ -5,6 +5,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents an event with a specific start and end time.
+ * This class extends the {@code Task} class and handles event-specific
+ * parsing and formatting for both date and time.
+ */
 public class Event extends Task {
     private String startTime;
     private String endTime;
@@ -13,6 +18,14 @@ public class Event extends Task {
     private LocalDateTime startDateTime = null;
     private LocalDateTime endDateTime = null;
 
+    /**
+     * Constructs a new {@code Event} object with the specified task name, start time, and end time.
+     * The times are parsed and stored as either {@code LocalDate} or {@code LocalDateTime} objects.
+     *
+     * @param taskName the name or description of the event
+     * @param startTime the start time of the event in string format
+     * @param endTime the end time of the event in string format
+     */
     public Event(String taskName, String startTime, String endTime) {
         super(taskName);
         this.startTime = startTime;
@@ -21,8 +34,13 @@ public class Event extends Task {
         parseEnd(endTime);
     }
 
+    /**
+     * Parses the start time of the event into either a {@code LocalDate} or {@code LocalDateTime}.
+     * Tries multiple date/time formats to successfully parse the string.
+     *
+     * @param string the start time as a string
+     */
     private void parseStart(String string) {
-        //define time format
         String[] dateTimeFormats = {
                 "d/M/yyyy HHmm",
                 "d/M/yyyy",
@@ -31,20 +49,25 @@ public class Event extends Task {
         for (String format : dateTimeFormats) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-                if (format.contains("HHmm")) { //if contain time
+                if (format.contains("HHmm")) { // if format contains time
                     this.startDateTime = LocalDateTime.parse(string, formatter);
-                } else { //only contain date
+                } else { // only contains date
                     this.startDate = LocalDate.parse(string, formatter);
                 }
                 return;
             } catch (DateTimeParseException e) {
-                //ignore exception
+                // ignore exception if the format does not match
             }
         }
     }
 
+    /**
+     * Parses the end time of the event into either a {@code LocalDate} or {@code LocalDateTime}.
+     * Tries multiple date/time formats to successfully parse the string.
+     *
+     * @param string the end time as a string
+     */
     private void parseEnd(String string) {
-        //define time format
         String[] dateTimeFormats = {
                 "d/M/yyyy HHmm",
                 "d/M/yyyy",
@@ -53,18 +76,24 @@ public class Event extends Task {
         for (String format : dateTimeFormats) {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-                if (format.contains("HHmm")) { //if contain time
+                if (format.contains("HHmm")) { // if format contains time
                     this.endDateTime = LocalDateTime.parse(string, formatter);
-                } else { //only contain date
+                } else { // only contains date
                     this.endDate = LocalDate.parse(string, formatter);
                 }
                 return;
             } catch (DateTimeParseException e) {
-                //ignore exception
+                // ignore exception if the format does not match
             }
         }
     }
 
+    /**
+     * Returns the string representation of the event, including the formatted start and end times.
+     * If date and time are provided, they will be formatted accordingly.
+     *
+     * @return a formatted string representing the event
+     */
     @Override
     public String toString() {
         String formattedStartTime = (startDateTime != null)
@@ -82,12 +111,24 @@ public class Event extends Task {
         return "[E]" + super.toString() + " (from: " + formattedStartTime + " to: " + formattedEndTime + ")";
     }
 
-
+    /**
+     * Formats the event for file storage. This includes the event type, completion status,
+     * task name, and the formatted start and end times.
+     *
+     * @return a string formatted for saving to a file
+     */
     @Override
     public String toFileFormat() {
         return "E | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName() + " (from: " + this.startTime + " to: " + this.endTime + ")";
     }
 
+    /**
+     * Reconstructs an {@code Event} task from a formatted file string.
+     * The input string should be in the format: {@code "E | <status> | <name> (from: <startTime> to: <endTime>)"}.
+     *
+     * @param fileFormat the string representation of the event task from a file
+     * @return a new {@code Event} object parsed from the file string
+     */
     static public Task fromFileFormat(String fileFormat) {
         String[] parts = fileFormat.split(" \\(from: ");
         String name = parts[0];
