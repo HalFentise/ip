@@ -21,9 +21,6 @@ public class Ui {
      */
     public void welcome() {
         System.out.println("--------------------------------");
-        System.out.println("please notice that\n" +
-                "the input date format should be: d/m/yyyy\n" +
-                "Sorry for bring any inconvenience to you.");
         System.out.println("Hello, I am HaHaHa!\nWhat can I do for you?");
         System.out.println("--------------------------------");
     }
@@ -63,7 +60,7 @@ public class Ui {
         if (tasks.isEmpty()) {
             System.out.println("No tasks in the list. Go and add something!");
         } else {
-            System.out.println("Here are your tasks:\n");
+            System.out.println("Here are your tasks:");
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.printf("%d. %s\n", i + 1, tasks.get(i));
             }
