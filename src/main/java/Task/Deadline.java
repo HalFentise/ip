@@ -73,6 +73,7 @@ public class Deadline extends Task {
         }
         // If the deadline is just a string
         else {
+
             return "[D]" + super.toString() + " (by: " + deadlineTime + ")";
         }
     }
