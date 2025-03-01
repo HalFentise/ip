@@ -1,68 +1,102 @@
 package Task;
 
-import Exceptions.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
- * Represents a task with a specific deadline.
- * Extends the {@code Task} class to include a deadline attribute.
+ * Represents a task that has a deadline.
+ * This class parses and stores a deadline, which can either be just a date or a date with a specific time.
  */
 public class Deadline extends Task {
-    private String deadline;
+    private String deadlineTime;  // Stores the deadline time as a string
+    private LocalDate date = null;  // Stores deadline as a LocalDate (only date, no time)
+    private LocalDateTime dateTime = null;  // Stores deadline as a LocalDateTime (date + time)
 
     /**
-     * Constructs a new {@code Deadline} task with the specified description and deadline.
-     * The input string should be in the format: {@code "<taskName> by <deadline>"}.
-     *
-     * @param taskString the full description of the deadline task, including the deadline
-     * @throws IllegalArgumentException if the format of the input string is invalid
+     * Constructor for creating a Deadline task.
+     * @param taskName the name of the task
+     * @param deadline the deadline string (either date or date + time)
      */
-    public Deadline(String taskString) {
-        super(taskString);
-        String[] parts = taskString.split(" by ");
-        if (parts.length == 2) {
-            setTaskName(parts[0]);
-            this.deadline = parts[1];
-        } else {
-            throw new IllegalArgumentException("Invalid deadline task format.");
+    public Deadline(String taskName, String deadline) {
+        super(taskName);
+        this.deadlineTime = deadline;
+        parseInput(deadline);  // Parses the provided deadline string into a date or datetime
+    }
+
+    /**
+     * Attempts to parse the input string into either a date or date-time.
+     * This method checks multiple date-time formats and tries to match the string to one of them.
+     * @param string the string representation of the deadline
+     */
+    private void parseInput(String string) {
+        // Define possible date-time formats
+        String[] dateTimeFormats = {
+                "d/M/yyyy HHmm",  // Format with time
+                "d/M/yyyy",       // Format without time
+        };
+
+        // Try each format and parse the string
+        for (String format : dateTimeFormats) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+                if (format.contains("HHmm")) {  // If format contains time (HHmm)
+                    this.dateTime = LocalDateTime.parse(string, formatter);
+                } else {  // If it only contains the date
+                    this.date = LocalDate.parse(string, formatter);
+                }
+                return;  // If parsing is successful, exit the method
+            } catch (DateTimeParseException e) {
+                // Ignore exception and try the next format
+            }
         }
     }
 
     /**
-     * Returns the string representation of the deadline task.
-     * Includes the task type, completion status, name, and deadline.
-     *
-     * @return a formatted string representing the deadline task
+     * Returns a string representation of the Deadline task.
+     * The string includes the task name and its deadline in a readable format.
+     * If the deadline includes time, it formats the time as well.
+     * @return a string representation of the Deadline task
      */
     @Override
     public String toString() {
-        String state = isDone ? "[X]" : "[ ]";
-        return "[D]" + state + " " + taskName + " (by: " + deadline + ")";
+        // If the deadline has both date and time
+        if (dateTime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+            return "[D]" + super.toString() + " (by: " + dateTime.format(formatter) + ")";
+        }
+        // If the deadline only has a date
+        else if (date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+            return "[D]" + super.toString() + " (by: " + date.format(formatter) + ")";
+        }
+        // If the deadline is just a string
+        else {
+            return "[D]" + super.toString() + " (by: " + deadlineTime + ")";
+        }
     }
 
     /**
-     * Formats the deadline task for file storage.
-     * Includes task type, completion status, name, and deadline.
-     *
-     * @return a string formatted for saving to a file
+     * Converts the Deadline task into a format suitable for saving to a file.
+     * @return a string representation of the Deadline task in file format
      */
     @Override
     public String toFileFormat() {
-        return "D | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName() + " (by: " + deadline + ")";
+        return "D | " + (isDone ? "  Done  " : "Not Done") + " | " + getTaskName() + " (by: " + deadlineTime + ")";
     }
 
     /**
-     * Reconstructs a {@code Deadline} task from a formatted file string.
-     * The input string should be in the format: {@code "D | <status> | <name> (by: <deadline>)"}.
-     *
-     * @param fileFormat the string representation of the deadline task from a file
-     * @return a new {@code Deadline} object parsed from the file string
-     * @throws IllegalArgumentException if the format of the file string is invalid
+     * Creates a Deadline task from a file format string.
+     * The string is expected to be in the format "D | status | taskName (by: deadline)".
+     * @param fileFormat the file format string
+     * @return a Deadline task created from the file format string
      */
-    public static Task fromFileFormat(String fileFormat) {
+    static public Task fromFileFormat(String fileFormat) {
+        // Split the file format string to extract the task name and deadline
         String[] parts = fileFormat.split(" \\(by: ");
-        String time = parts[1].substring(0, parts[1].length() - 1); // Remove closing parenthesis
-        String deadline = parts[0] + " by " + time;
-        return new Deadline(deadline);
+        String time = parts[1].substring(0, parts[1].length() - 1);  // Extract the deadline time
+        return new Deadline(parts[0], time);  // Return a new Deadline task with the extracted information
     }
 }
 
