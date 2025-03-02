@@ -65,6 +65,49 @@ public class TaskList {
     public ArrayList<Task> getTasks() {
         return tasks;
     }
+
+    /**
+     * Return the list of todo tasks.
+     * @return the list of todo tasks.
+     */
+    public ArrayList<Task> getTodoTasks() {
+        ArrayList<Task> todoTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task instanceof Todo) {
+                todoTasks.add(task);
+            }
+        }
+        return todoTasks;
+    }
+
+    /**
+     * Return the list of deadline tasks.
+     * @return the list of deadline tasks.
+     */
+    public ArrayList<Task> getDeadlineTasks() {
+        ArrayList<Task> deadlineTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task instanceof Deadline) {
+                deadlineTasks.add(task);
+            }
+        }
+        return deadlineTasks;
+    }
+
+    /**
+     * Return the list of event tasks.
+     * @return the list of event tasks.
+     */
+    public ArrayList<Task> getEventTasks() {
+        ArrayList<Task> eventTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task instanceof Event) {
+                eventTasks.add(task);
+            }
+        }
+        return eventTasks;
+    }
+
     /**
      * Finds tasks whose names contain the specified keyword.
      * @param keyword the keyword to search for in task names

@@ -21,9 +21,6 @@ public class Ui {
      */
     public void welcome() {
         System.out.println("--------------------------------");
-        System.out.println("please notice that\n" +
-                "the input date format should be: d/m/yyyy\n" +
-                "Sorry for bring any inconvenience to you.");
         System.out.println("Hello, I am HaHaHa!\nWhat can I do for you?");
         System.out.println("--------------------------------");
     }
@@ -50,7 +47,9 @@ public class Ui {
      */
     public String getUserInput() {
         System.out.print("Enter command: ");
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+        showLine();
+        return input;
     }
 
     /**
@@ -61,7 +60,7 @@ public class Ui {
      */
     public void showTasks(ArrayList<Task> tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("No tasks in the list. Go and add something!");
+            System.out.println("There are no task in the list. Go and add something!");
         } else {
             System.out.println("Here are your tasks:\n");
             for (int i = 0; i < tasks.size(); i++) {
@@ -104,6 +103,28 @@ public class Ui {
         System.out.println("Noted. I've removed this task:");
         System.out.println(task);
         System.out.println("Now you have " + totalTasks + " tasks in the list.");
+        showLine();
+    }
+
+    /**
+     * Displays a confirmation message when a task is marked
+     *
+     * @param task the task that was marked
+     */
+    public void showTaskMarked(Task task) {
+        System.out.println("Great! I've marked this task.");
+        System.out.println(task);
+        showLine();
+    }
+
+    /**
+     * Displays a confirmation message when a task is unmarked
+     *
+     * @param task the task that was unmarked
+     */
+    public void showTaskUnmarked(Task task) {
+        System.out.println("Ok, I've unmarked this task.");
+        System.out.println(task);
         showLine();
     }
 }
