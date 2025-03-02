@@ -1,7 +1,7 @@
 # SmartNotes User Guide
 
 ## SmartNotes User ScreenShots
-![Add tasks in SmartNotes](Images\Screenshot1.png)
+![ScreenShot of SmartNotes](Images\Screenshot1.png)
 
 ## SmartNotes Introduction
 SmartNotes is an intelligent chatbot designed to help users efficiently manage and organize their important tasks.
