@@ -26,23 +26,7 @@ public class Parser {
         try {
             switch (command) {
                 case "list":
-                    if (parts.length == 1) {
-                        ui.showTasks(taskList.getTasks());
-                    } else {
-                        switch (parts[1].toLowerCase()) {
-                            case "todo":
-                                ui.showTasks(taskList.getTodoTasks());
-                                break;
-                            case "event":
-                                ui.showTasks(taskList.getEventTasks());
-                                break;
-                            case "deadline":
-                                ui.showTasks(taskList.getDeadlineTasks());
-                                break;
-                            default:
-                                throw new TaskException("This is an invalid command");
-                        }
-                    }
+                    ui.showTasks(taskList.getTasks());
                     break;
                 case "todo":
                     if (parts.length < 2) {
@@ -111,7 +95,7 @@ public class Parser {
                     int markIndex = Integer.parseInt(parts[1]) - 1;
                     taskList.markTask(markIndex);
                     storage.saveTasks(taskList.getTasks());
-                    ui.showTaskMarked(taskList.getTask(markIndex));
+                    ui.showTasks(taskList.getTasks());
                     break;
                 case "unmark":
                     if (parts.length < 2 || !parts[1].matches("\\d+")) {
@@ -120,7 +104,7 @@ public class Parser {
                     int unmarkIndex = Integer.parseInt(parts[1]) - 1;
                     taskList.unmarkTask(unmarkIndex);
                     storage.saveTasks(taskList.getTasks());
-                    ui.showTaskUnmarked(taskList.getTask(unmarkIndex));
+                    ui.showTasks(taskList.getTasks());
                     break;
                 case "bye":
                     System.out.println("Goodbye! Hope to see you again!");
@@ -135,7 +119,7 @@ public class Parser {
                     }
                     break;
                 default:
-                    throw new TaskException("This is an invalid command");
+                    throw new TaskException("Unknown command.");
             }
         } catch (TaskException | IOException e) {
             ui.showError(e.getMessage());

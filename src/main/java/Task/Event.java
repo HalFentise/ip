@@ -42,14 +42,8 @@ public class Event extends Task {
      */
     private void parseStart(String string) {
         String[] dateTimeFormats = {
-                "dd/MM/yyyy HHmm",  // Format with time
-                "dd-MM-yyyy HHmm",
-                "yyyy-MM-dd HHmm",
-                "yyyy/MM/dd HHmm",
-                "dd/MM/yyyy",   // Format without time
-                "dd-MM-yyyy",
-                "yyyy/MM/dd",
-                "yyyy-MM-dd",
+                "d/M/yyyy HHmm",
+                "d/M/yyyy",
         };
 
         for (String format : dateTimeFormats) {
@@ -75,14 +69,8 @@ public class Event extends Task {
      */
     private void parseEnd(String string) {
         String[] dateTimeFormats = {
-                "dd/MM/yyyy HHmm",  // Format with time
-                "dd-MM-yyyy HHmm",
-                "yyyy-MM-dd HHmm",
-                "yyyy/MM/dd HHmm",
-                "dd/MM/yyyy",   // Format without time
-                "dd-MM-yyyy",
-                "yyyy/MM/dd",
-                "yyyy-MM-dd",
+                "d/M/yyyy HHmm",
+                "d/M/yyyy",
         };
 
         for (String format : dateTimeFormats) {

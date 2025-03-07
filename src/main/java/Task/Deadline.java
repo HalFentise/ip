@@ -33,14 +33,8 @@ public class Deadline extends Task {
     private void parseInput(String string) {
         // Define possible date-time formats
         String[] dateTimeFormats = {
-                "dd/MM/yyyy HHmm",  // Format with time
-                "dd-MM-yyyy HHmm",
-                "yyyy-MM-dd HHmm",
-                "yyyy/MM/dd HHmm",
-                "dd/MM/yyyy",   // Format without time
-                "dd-MM-yyyy",
-                "yyyy/MM/dd",
-                "yyyy-MM-dd",
+                "d/M/yyyy HHmm",  // Format with time
+                "d/M/yyyy",       // Format without time
         };
 
         // Try each format and parse the string
