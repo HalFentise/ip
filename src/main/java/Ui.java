@@ -21,7 +21,7 @@ public class Ui {
      */
     public void welcome() {
         System.out.println("--------------------------------");
-        System.out.println("Hello, I am HaHaHa!\nWhat can I do for you?");
+        System.out.println("Hello, I am SmartNotes!\nWhat can I do for you?");
         System.out.println("--------------------------------");
     }
 
